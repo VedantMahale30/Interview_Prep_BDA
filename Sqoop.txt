@@ -1,0 +1,354 @@
+Sqoop
+
+What is Sqoop?
+- Sqoop is an open source framework provided by Apache. It is a command-line interface application for 
+transferring data between relational databases and Hadoop.
+
+Sqoop Working
+Step 1: Sqoop send the request to Relational DB to send the return the metadata informationabout the 
+table(Metadata here is the data about the table in relational DB).
+
+Step 2: From the received information it will generate the java classes (Reason why you shouldhave Java 
+configured before get it working-Sqoop internally uses JDBC API to generate data).
+
+Step 3: Now Sqoop (As its written in java ?tries to package the compiled classes to beable togenerate table 
+structure) , post compiling creates jar file(Java packaging standard).
+
+How Sqoop works?
+- Sqoop asks for metadata information from Relation DB.
+- Relational DB returns the required request.
+- Based on metadata information Sqoop generates java classes.
+- Based on primary id partitioning happens in table as multiple mappers will importing data as the same time.
+
+Why Sqoop?
+- Extract-Transform-Load use cases.
+- Leverage parallel processing of Hadoop.
+- Data Analysis on Hadoop side.
+- Business Intelligence.
+
+- By default sqoop does 4 splits.
+- It uses 4 mappers.
+
+Basic Commands : - 
+
+1. Import relational table into HDFS directory
+sqoop import \
+	--connect jdbc:mysql://localhost/database_name \
+	--username vinish \
+	--password vinish@123 \
+	--table table_name \
+	--warehouse-dir /path/to/directory/ \
+	--driver com.mysql.jdbc.Driver
+(by using "warehouse-dir" command ,name of the table remains same in hdfs.In order to change tahe table name, use 
+"target-dir" command)
+
+2.Import relational table into HDFS directory with specific name
+sqoop import \
+	--connect jdbc:mysql://localhost/database_name \
+	--username vinish \
+	--password vinish@123 \
+	--table table_name \
+	--target-dir /path/to/directory/table_name \
+	--driver com.mysql.jdbc.Driver
+
+3. Making option file
+write these commands in a file so that you can call it many times.Refer same file across diff sqoop command.
+	--connect jdbc:mysql://localhost/database_name \
+	--username vinish \
+	--password vinish@123 \
+	--driver com.mysql.jdbc.Driver
+use command "--option-file"
+
+4. Controlling Parallelism
+sqoop import \
+	--option-files /path/to/file/ \
+	--table table_name \
+	--target-dir /path/to/directory/table_name \
+	--num-mapper 2
+
+sqoop import \
+	--option-file /path/to/file/ \
+	--target-dir /path/to/target/directory/table_name \
+	--m 2
+
+5. Overwrite Existing Table
+sqoop import \
+	--option-file path/to/file/ \
+	--table table_name \
+	--target-dir /path/to/target/directory/table_name \
+	--delete-target-dir
+
+6. Append Existing Table
+sqoop import \
+	--option-file path/to/file/ \
+	--table table_name \
+	--target-dir /path/to/targer/directory/table_name \
+	--delete-target-dir
+	--append
+
+
+7. Import Specific Column
+sqoop import \
+  --option-file /path/to/file \
+  --table table_name \
+  --columns "column1,column2,column3" \
+  --target-dir /path/to/target/directory
+
+8. Import tables with no primary key
+sqoop import \
+	--option-file /path/to/file \
+	--table table_name \
+	--target-dir /path/to/target/directory \
+	--split-by column1
+  
+sqoop import \
+	--option-file /path/to/file \
+	--table table_name \
+	--target-dir /path/to/target/directory \
+	--autoreset-to-one-mapper
+(In absence of --split-by and primary key in source table, reset mapper to 1)
+  
+9. Running sqoop in Debug Mode
+sqoop import \
+	--option-file /path/to/file \
+	--table table_name \
+	--target-dir /path/to/target/directory \
+	--delete-target-dir \
+	--verbose
+
+10. Storing sqoop result in Text format(by default file is stired in text format)
+sqoop import \
+	--option-file /path/to/file \
+	--table table_name \
+	--target-dir /path/to/target/directory \
+	--as-textfile \
+	--delete-target-dir 
+	
+
+11. Storing sqoop result in AVRO format
+sqoop import \
+	--option-file /path/to/file \
+	--table table_name \
+	--target-dir /path/to/target/directory \
+	--as-avrodatafile \
+	--delete-target-dir 
+(it is binary file fromat)
+
+12. Storing sqoop result in Sequence file format
+sqoop import \
+	--option-file /path/to/file \
+	--table table_name \
+	--target-dir /path/to/target/directory \
+	--as-sequencefile \
+	--delete-target-dir 
+(it is binary file fromat)
+
+13. Storing sqoop result in Parquet file format
+sqoop import \
+	--option-file /path/to/file \
+	--table table_name \
+	--target-dir /path/to/target/directory \
+	--as-parquetfile \
+	--delete-target-dir 
+(it is binary file fromat)
+
+14. Compression
+--compress
+--compression-codec(optional)
+
+Supported Compression Codecs are :-
+org.apache.hadoop.io.compress.GzipCodec(default)
+org.apache.hadoop.io.compress.DefaultCodec
+org.apache.hadoop.io.compress.SnappyCodec
+com.hadoop.compression.lzo.LzopCodec
+
+sqoop import \
+	--option-file /path/to/file \
+	--table table_name \
+	--target-dir /path/to/target/directory \
+	--delete-target-dir 
+	--compress
+	
+sqoop import \
+	--option-file /path/to/file \
+	--table table_name \
+	--target-dir /path/to/target/directory \
+	--delete-target-dir \
+	--compress \
+	--compression-codec org.apache.hadoop.io.compress.SnappyCodec
+
+15. Running Custom queries
+sqoop import \
+	--option-file /path/to/file/ \
+	--query "SELECT id, name, age FROM employees WHERE \$CONDITIONS" \
+	--split-by id \
+	--target-dir /path/to/target/directory/table_name
+
+16. Handling Null Values
+sqoop import \ 
+	--option-file /path/to/file/ \
+	--table table_name \
+	--target-dir /path/to/target/directory/table_name
+	--delete-target-dir \
+	--null-string BLANK
+	(for string data, replaces null value with string "BLANK")
+
+sqoop import \ 
+	--option-file /path/to/file/ \
+	--table table_name \
+	--target-dir /path/to/target/directory/table_name
+	--null-non-string 2
+	(for non string data, replaces null value with number 2)
+
+17. How to change field delimiter in o/p
+sqoop import \ 
+	--option-file /path/to/file/ \
+	--table table_name \
+	--target-dir /path/to/target/directory/table_name
+	--delete-target-dir \
+	--fields-terminated-by "\"
+
+18. When data contains delimiter character
+--escaped-by \\
+--enclosed-by '\"'
+--optionally-enclosed-by
+
+19. Continuous(Incremental) Import
+--check-column (cannot be used on char,varchar,longchar data type)
+--incremental
+--last-value
+(combination of above 3 is used for incremental load)
+
+sqoop import \ 
+	--option-file /path/to/file/ \
+	--table table_name \
+	--target-dir /path/to/target/directory/table_name
+	--check-column hire_date
+	--incremental last modified
+	--last-value "1987-02-03" (data is imported after this date)
+	--append
+	
+20. Relation DB-Sqoop-Hive
+--hive-import (write this command instead of "target-dir" which indicates its hive import)
+--hive-database (it will hold the data)
+--hive-table (specify name of the table which will be created in hive)
+(All 3 commands is used to import data directly into HIVE)
+
+sqoop import \ 
+	--option-file /path/to/file/ \
+	--table table_name \
+	--hive-import
+	--hive-database your_database_name
+	--hive-table table_name
+	
+21. Sqoop import into ORC File
+--hcatalog-database (database name)
+--hcatalog-table (table name)
+--create-hcatalog-table (indicates we need to create table)
+--hcatalog-storage-stanza (this defines the storage of ORC file)
+(directly imports data into hive table into ORC format)
+
+sqoop import \ 
+	--option-file /path/to/file/ \
+	--table table_name \
+	--hcatalog-database your_database_name
+	--hcatalog-table table_name
+	--create-hcatalog-table 
+	--hcatalog-storage-stanza "stored as ORC file"
+	
+22. Import all tables into hadoop
+sqoop import-all-tables (all columns must be imported.Use autoreset-to-one-mapper if there are non primary key)
+	--option-file /path/to/file/ \
+	--warehouse-dir /path/to/directory/ \
+	--autoreset-to-one-mapper
+	--exclude-tables table1,table2,table3 (if you want to exclude any tables)
+("split-by" cannot be used here)
+
+23. Import all tables into hive
+sqoop import-all-tables (all columns must be imported.Use autoreset-to-one-mapper if there are non primary key)
+	--option-file /path/to/file/ \
+	--hive-import
+	--hive-database your_database_name
+	--autoreset-to-one-mapper
+	--exclude-tables table1,table2,table3 (if you want to exclude any tables)
+("split-by" cannot be used here)
+
+24. Sqoop Export 
+sqoop export \ 
+	--option-file /path/to/file/ \
+	--export-dir /path/to/target/directory \
+	--table table_name \
+	--input-fields-terminated-by ','
+(moves data from hadoop into RDBMS)	
+
+25. Sqoop partial Export
+sqoop export \ 
+	--option-file /path/to/file/ \
+	--table table_name \
+	--staging-table table_name \(temporarily stores data in stages)
+	--clear-staging-table \(table which helps in rollback in case of failure)
+	--columns column1,column2,column3 \
+	--export-dir /path/to/hdfs/data \
+	--input-fields-terminated-by ','
+
+26. When update a record is OK
+sqoop export \ 
+	--option-file /path/to/file/ \
+	--table table_name \
+	--update-key column_name \(used to identify column with primary key)
+	--update-mode allowinsert \(allowinsert,updateonly)
+	--columns column1,column2,column3 \
+	--export-dir /path/to/hdfs/data \
+	--input-fields-terminated-by ','
+	
+27. Sqoop Job
+--create
+--delete
+--exec
+--show
+--list
+(executes sqoop process as a ob which can be triggered on recurring basis)
+
+sqoop job
+	--create job_name \
+	--import \
+	--option-file  /path/to/file/ \
+	--check-column column_name
+	--incremental append
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

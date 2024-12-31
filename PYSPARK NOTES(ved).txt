@@ -1,0 +1,232 @@
+spark 
+
+
+
+1) To create spark session:
+
+spark = SparkSession.builder \
+    .appName("your_name") \
+    .getOrCreate()
+
+	
+	
+	
+2) Core PySpark Libraries:
+
+from pyspark.sql import SparkSession
+Purpose: Entry point to use PySpark 
+
+from pyspark.sql.functions import *
+Purpose: To Access all built-in SQL-like functions for column operations, aggregations, string manipulations, etc.
+
+from pyspark.sql import *
+Purpose: This imports all the modules in pyspark.sql, including SparkSession, DataFrame, DataFrameReader, and more.
+
+
+
+
+3) To read data frame:
+df = spark.read.format('csv')\
+            .option('header', 'true')\
+            .option('inferschema', 'true')\
+            .load('yourfile.csv')
+
+
+
+			
+4) Read without header and specify schema:
+
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType
+
+schema = StructType([
+    StructField("Name", StringType(), True),
+    StructField("Age", IntegerType(), True) 
+	                ])
+df = spark.read.schema(schema).csv("path/to/file.csv")
+
+
+
+
+5) To print schema:
+df.printSchema()
+
+
+
+
+6) Overwrite existing data:
+df.write.mode("overwrite").csv("path/to/output.csv", header=True)
+
+
+
+
+7) Partition by column:
+df.write.partitionBy("column_name").parquet("path/to/output.parquet")
+
+
+
+
+8) 3 Modes for Writing PySpark supports the following write modes:
+
+overwrite: Overwrite the existing data.
+append: Append to the existing data.
+ignore: Ignore the write operation if data exists.
+error (default): Fail the write operation if data exists.
+
+
+
+
+9) some Configurations:
+
+Schema Inference: inferSchema=True (for CSV and JSON).
+Header: header=True (for CSV).
+Multi-line JSON: multiline=True (for JSON).
+
+
+
+
+10) Type of modes for error handling :
+FAILFAST - Throws an error if it encounters corrupt or invalid data.
+PERMISSIVE (DEAFULT MODE)  -  It will attempt to handle corrupt or invalid records by putting them into a separate column
+PERMISSIVE - It will immediately stops the job and throws an error if it encounters corrupt or invalid data.
+
+
+
+
+11) Save the Repartitioned DataFrame:
+df.repartition(4).write.csv("path/to/output.csv", header=True, mode="overwrite")
+df.repartition(4).write.parquet("path/to/output.parquet", mode="overwrite")
+df.repartition(4).write.json("path/to/output.json", mode="overwrite")
+
+
+
+
+12)Data transformation commands:
+1. Filtering Rows & where clause: 
+
+df.filter(df["Age"] > 30).show()   
+df.where(df["Age"] > 30).show()
+
+
+2. Selecting and Renaming Columns
+
+df.select("Name", "Age").show()
+df.withColumnRenamed("Owner", "Owners").show()
+
+
+3. Adding or Modifying Columns:
+
+df.withColumn("Age_in_10_years", df["Age"] + 10).show()
+df.drop("Age").show()
+
+
+4. Grouping and Aggregations:
+
+df.groupBy("Department").agg({"Salary": "avg", "Bonus": "sum"}).show()
+df.agg({"Salary": "max"}).show()
+
+
+5. Sorting Rows:
+
+df.sort("Age").show()
+df.orderBy(df["Age"].desc()).show()
+
+
+6. Handling Missing Data:
+
+df.dropna().show()
+df.fillna({"Age": 30, "Salary": 5000}).show()
+
+
+7. Joins:
+
+inner = df1.join(df2, df1["ID"] == df2["ID"], "inner").show()
+left  = df1.join(df2, df1["ID"] == df2["ID"], "left").show()
+right = df1.join(df2, df1["ID"] == df2["ID"], "right").show()
+
+
+8. Pivoting and Melting:
+
+df.groupBy("Department").pivot("Gender").sum("Salary").show()
+
+
+9. Union and Intersection:
+
+union_df = df1.union(df2)
+union_df.show()
+
+intersection_df = df1.intersect(df2)
+intersection_df.show()
+
+
+10. Distinct and Duplicate Handling:
+
+df.dropDuplicates(["Name", "Age"]).show()
+df.distinct().show()
+
+
+11.Window Functions:
+
+from pyspark.sql import Windows
+
+window = Window.partitionBy("Department").orderBy(df["Salary"].desc())
+df.withColumn("rank", rank().over(window)).show()
+
+
+12. String Operations:
+
+
+substring = df.withColumn("ShortName", df["Name"].substr(1, 3)).show()
+lowercase & upperecase = df.withColumn("LowerName", lower(df["Name"])).show()
+
+
+13.Conditional Statements:
+
+Using when and otherwise = 
+df.withColumn("Senior", when(df["Age"] > 60, "Yes").otherwise("No")).show()
+
+
+14. Combining Transformations:
+
+
+df.filter(df["Age"] > 25) \
+  .withColumn("Age_in_10_years", df["Age"] + 10) \
+  .groupBy("Department").agg({"Salary": "avg"}) \
+  .orderBy("avg(Salary)", ascending=False) \
+  .show()
+
+
+
+
+13. Key Differences Between repartition() and coalesce()
+
+Purpose for repartition():
+The repartition() method is used to increase or decrease the number of partitions of a DataFrame. It performs a full shuffle of the data, meaning it redistributes data across all available nodes in the cluster.
+
+When to use:
+Increasing the number of partitions.
+Redistributing data across multiple nodes in a cluster.
+When you want a more even distribution of data.
+
+# Repartition to 4 partitions
+df_repartitioned = df.repartition(4)
+
+
+
+Purpose for coalesce():
+The coalesce() method is used to reduce the number of partitions. Unlike repartition(), coalesce() does not perform a full shuffle and instead combines adjacent partitions. This makes it much more efficient when reducing the number of partitions, especially when you're reducing to a smaller number.
+
+When to use:
+Decreasing the number of partitions (e.g., when saving data).
+When you want to optimize performance without having to shuffle the entire dataset.
+Typically used when you're performing actions like writing data to disk or aggregating results.
+
+# Coalesce to 2 partitions
+df_coalesced = df.coalesce(2)
+
+
+
+
+13. To check the number of partitions in a PySpark DataFrame:
+ rdd.getNumPartitions() 
+ This method returns the number of partitions that the DataFrame is currently split int
+

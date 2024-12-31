@@ -1,0 +1,1258 @@
+Linux Commands For Interview 
+---------------------------------------------------------------------------------------------------------
+File and Directory Management
+---------------------------------------------------------------------------------------------------------
+1. ls
+   - List files and directories in the current directory.  
+   - Example: ls -l (detailed listing), ls -a (include hidden files).
+
+2. cd
+   - Change directory.  
+   - Example: cd /home/username, cd .. (move to the parent directory).
+
+3. pwd
+   - Print the current working directory.
+
+4. mkdir
+   - Create a new directory.  
+   - Example: mkdir new_folder.
+
+5. rm
+   - Remove files or directories.  
+   - Example: rm file.txt, rm -r folder (recursive delete).
+   
+   -rf
+
+6. cp
+   - Copy files or directories.  
+   - Example: cp source.txt destination.txt, cp -r source_folder/ dest_folder/.
+
+7. mv
+   - Move or rename files and directories.  
+   - Example: mv old_name new_name, mv file.txt /destination/path/.
+
+8. find
+   - Search for files and directories.  
+   - Example: find /path -name "file.txt".
+
+9. touch
+   - Create an empty file.  
+   - Example: touch new_file.txt.
+   
+10)   
+
+---------------------------------------------------------------------------------------------------------
+VI editor
+---------------------------------------------------------------------------------------------------------
+The VI editor (short for "Visual Editor") is a powerful text editor available on almost all Linux and Unix systems. 
+It is widely used for editing configuration files, scripts, and general text files.  
+
+Below is a comprehensive guide to the VI editor, including its modes, commands, and common uses.
+
+Modes in VI Editor
+VI operates in three primary modes:
+1. Command Mode (default on opening):  
+   - Used for navigation and executing commands.  
+   - You cannot directly type text in this mode.  
+   - Press `ESC` to switch to Command Mode.
+
+2. Insert Mode:  
+   - Used for inserting and editing text.  
+   - Enter Insert Mode by pressing `i`, `a`, or `o`.
+
+3. Last Line Mode (also called Command-Line Mode):  
+   - Used for saving, quitting, or executing advanced commands.  
+   - Enter by pressing `:` from Command Mode.
+
+Opening a File
+To open or create a file:  
+vi filename
+- If the file exists, it opens in Command Mode.
+- If the file doesn’t exist, it creates a new file.
+
+Basic Navigation in Command Mode
+|---------------------|--------------------------------------------|
+| Command             | Action                                     |
+|---------------------|--------------------------------------------|
+| `h`                 | Move left                                  |
+| `l`                 | Move right                                 |
+| `j`                 | Move down                                  |
+| `k`                 | Move up                                    |
+| `0`                 | Move to the beginning of the line          |
+| `$`                 | Move to the end of the line                |
+| `w`                 | Move to the next word                      |
+| `b`                 | Move to the beginning of the previous word |
+| `G`                 | Move to the end of the file                |
+| `gg`                | Move to the beginning of the file          |
+| `:n`                | Go to line `n` (e.g., `:10` for line 10)   |
+|---------------------|--------------------------------------------|
+
+Entering Insert Mode
+|---------------------|--------------------------------------------|
+| Command             | Action                                     |
+|---------------------|------------------------------------------- |
+| `i`                 | Insert text before the cursor              |
+| `I`                 | Insert text at the beginning of the line   |
+| `a`                 | Append text after the cursor               | 
+| `A`                 | Append text at the end of the line         |
+| `o`                 | Open a new line below the current line     |
+| `O`                 | Open a new line above the current line     |
+|---------------------|--------------------------------------------|
+ 
+Editing Text
+|---------------------|-------------------------------------------|
+| Command             | Action                                    |
+|---------------------|-------------------------------------------|
+| `x`                 | Delete the character under the cursor     |
+| `r`                 | Replace the character under the cursor    |
+| `R`                 | Enter Replace Mode                        |
+| `dd`                | Delete the current line                   |
+| `dw`                | Delete the current word                   |
+| `d$`                | Delete from the cursor to the end of line |
+| `u`                 | Undo the last action                      |
+| `Ctrl + r`          | Redo the last undone action               |
+| `y`                 | Yank (copy) the selected text             |
+| `p`                 | Paste the copied or cut text after cursor |
+| `P`                 | Paste the copied or cut text before cursor|
+|---------------------|-------------------------------------------|
+
+Saving and Exiting
+|---------------------|-------------------------------------------|
+| Command             | Action                                    |
+|---------------------|-------------------------------------------|
+| `:w`                | Save the file                             |
+| `:q`                | Quit (if no unsaved changes)              |
+| `:wq` or `ZZ`       | Save and quit                             |
+| `:q!`               | Quit without saving                       |
+| `:x`                | Save and quit (similar to `:wq`)          |
+|---------------------|-------------------------------------------|
+Search and Replace
+- Search for a string:  
+
+  /string   # Search forward
+  ?string   # Search backward
+
+  - Press `n` to find the next match.
+  - Press `N` to find the previous match.
+
+- Replace a string:
+
+  :%s/old/new/g
+  Replace "old" with "new" in the entire file.  
+  - :n,m s/old/new/g` → Replace in lines `n` to `m`.
+
+Working with Multiple Files
+1. Open multiple files:  
+   vi file1 file2
+
+2. Switch to the next file:  
+   :n
+   
+3. Switch to the previous file:  
+   :N
+
+Split Screen
+- Split the window horizontally:  
+  :split filename
+  
+- Split the window vertically:  
+  :vsplit filename
+
+- Navigate between splits:  
+  Ctrl + w + (h/j/k/l)
+
+
+Advanced Commands
+|---------------------------|---------------------------------------|
+| Command                   | Action                                |
+|---------------------------|---------------------------------------|
+| `:set number`             | Show line numbers                     |
+| `:set nonumber`           | Hide line numbers                     |
+| `:syntax on`              | Enable syntax highlighting            |
+| `:!command`               | Run an external shell command         |
+| `:%!command`              | Replace file content with shell command output |
+| `:r filename`             | Insert content of another file        |
+|---------------------------|---------------------------------------|
+
+
+---------------------------------------------------------------------------------------------------------
+File Content Viewing and Editing
+---------------------------------------------------------------------------------------------------------
+1. cat
+   - View file contents.  
+   - Example: cat file.txt.
+
+2. less
+   - View large file content page-by-page.  
+   - Example: less log.txt.
+
+3. head/tail
+   - View the first or last few lines of a file.  
+   - Example: head -n 10 file.txt, tail -n 20 file.txt.
+
+4. nano/vi/vim
+   - Edit files in the terminal.  
+   - Example: nano file.txt, vim file.txt.
+
+-------------------------------------------------------------------------------------------------------------
+File Permissions and Ownership
+-------------------------------------------------------------------------------------------------------------
+The `chmod` command in Linux is used to change file and directory permissions. 
+Permissions control who can read, write, or execute a file or directory. Let's dive into its details.
+
+Each file or directory has three types of permissions:
+1. Read (`r`) - Allows viewing the file or listing the directory contents.
+2. Write (`w`) - Allows modifying the file or creating/deleting files in a directory.
+3. Execute (`x`) - Allows executing a file (e.g., a script) or accessing a directory.
+
+Permissions are assigned to three categories:
+- Owner (u): The user who owns the file.
+- Group (g): Users in the file's group.
+- Others (o): Everyone else.
+
+Permissions are represented in two ways:
+1. Symbolic Format: `rwx`
+2. Numeric Format (Octal): A 3-digit number (e.g., `755`).
+
+Syntax
+chmod [options] mode file
+- mode: Specifies the permissions to set.
+- file: The file or directory for which permissions are being changed.
+
+
+Using Numeric (Octal) Permissions
+Permissions are represented by numbers:
+	- Read (`r`) = 4
+	- Write (`w`) = 2
+	- Execute (`x`) = 1
+
+The total for each category is the sum of these values. For example:
+	- `7` (rwx) = Read + Write + Execute (4 + 2 + 1)
+	- `5` (r-x) = Read + Execute (4 + 1)
+	- `0` (---) = No permissions
+
+
+Examples:
+chmod 755 file.txt
+chmod 644 my_script.sh
+
+
+Using Symbolic Permissions
+Symbolic permissions allow you to add, remove, or set specific permissions without affecting others.  
+
+Syntax:
+chmod [who][operator][permissions] file
+
+- who:
+  - `u`: Owner
+  - `g`: Group
+  - `o`: Others
+  - `a`: All (u + g + o)
+- operator:
+  - `+`: Add permission
+  - `-`: Remove permission
+  - `=`: Set exact permission
+
+Examples:
+1. Add execute permission for the owner:
+   chmod u+x file.txt
+2. Remove write permission for others:
+   chmod o-w file.txt
+3. Set read and execute permissions for everyone:
+   chmod a=rx file.txt
+   
+Recursive Permission Changes
+	To apply `chmod` to all files and subdirectories within a directory, use the `-R` option:
+	chmod -R 755 /path/to/directory
+
+Special Permissions
+1. Set User ID (SUID):  
+   Allows a program to run with the file owner's privileges.  
+   - Add: `chmod u+s file`
+   - Symbol: `s` in the owner's execute position (`rws`).
+
+2. Set Group ID (SGID):  
+   Files created in the directory inherit the group of the directory.  
+   - Add: `chmod g+s directory`
+   - Symbol: `s` in the group's execute position (`rws` or `r-x`).
+
+3. Sticky Bit:  
+   Only the owner can delete or modify files in a directory.  
+   - Add: `chmod +t directory`
+   - Symbol: `t` in others' execute position (`rwt`).
+
+
+-------------------------------------------------------------------------------------------------------------
+Disk Usage and Storage
+-------------------------------------------------------------------------------------------------------------
+1. df
+   - Check disk space usage.  
+   - Example: df -h (human-readable format).
+
+2. du
+   - Check directory or file size.  
+   - Example: du -sh folder.
+   
+3. lsblk
+   - The lsblk (list block devices) command shows detailed information about block devices and partitions.
+   - Syntax: lsblk [options]
+   - Common Options:
+		-f: Display file system details.
+		-a: Show all devices, including empty ones.
+		-o: Customize output columns.
+	Example:
+		> Basic partition layout:
+			lsblk
+		> Display file systems:
+			lsblk -f
+	Sample Output:
+
+		NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+		sda      8:0    0  50G  0 disk
+		├─sda1   8:1    0  40G  0 part /
+		├─sda2   8:2    0   8G  0 part [SWAP]
+		
+4.	Finding Large Files: find Command
+		Use find to locate files larger than a specified size.
+		Syntax:
+			find /path -type f -size +[size]
+
+		Examples:
+			Find files larger than 1GB :
+			find / -type f -size +1G
+
+5.  Checking Disk Health: fsck
+		File System Check (fsck) is used to check and repair file systems:
+			fsck /dev/sdX1
+
+6.  Monitoring Disk I/O: iostat
+		The iostat command monitors disk input/output:
+			iostat -x 1
+			
+7 . Tips for Managing Disk Space
+		Clean Temporary Files:
+			rm -rf /tmp/*
+		Remove Unused Packages:
+			sudo apt-get autoremove
+		Clear Package Cache:
+			sudo apt-get clean
+
+
+-------------------------------------------------------------------------------------------------------------
+Process Management
+-------------------------------------------------------------------------------------------------------------
+In Linux, process management refers to controlling, monitoring, and terminating processes running on the system. 
+Processes can run in the foreground, background, or even be automated using scripts. 
+
+1. Viewing Processes
+	A) `ps` Command 
+		Displays information about active processes.
+		Syntax:
+			ps [options]
+		Common Options:
+		- `ps` → Lists processes for the current shell.
+		- `ps -e` → Shows all processes.
+		- `ps -f` → Full-format listing.
+		- `ps aux` → Displays detailed information, including user ownership.
+		
+		Example:
+			ps aux | grep python
+			
+	B) `top` Command
+		Displays an interactive, real-time view of running processes.
+		Syntax:
+			top
+		Key Actions in `top`:
+			- `k` → Kill a process.
+			- `r` → Renice (change priority) a process.
+			- `q` → Quit.
+			
+	C) `pgrep` Command
+		Search for processes by name.
+		Syntax:
+			pgrep [process-name]
+		Example:
+			pgrep apache2
+			
+		
+2. Managing Processes
+		A) `kill` Command
+			Terminates a process by PID.
+			Syntax:
+				kill [signal] PID
+			Common Signals:
+				- `15` (SIGTERM) → Graceful termination (default).
+				- `9` (SIGKILL) → Force termination.
+				- `1` (SIGHUP) → Restart process.
+
+			Examples:
+				1. Terminate a process:
+					kill 1234	
+				2. Force terminate:
+					kill -9 1234
+ 
+		B) `killall` Command
+			Kills processes by name.
+			Syntax:
+				killall [process-name]
+			Example:
+				killall firefox
+				
+		C) `pkill` Command
+			Kill processes by name or attributes (similar to `killall` but more versatile).
+			Syntax:
+				pkill [options] [process-name]
+			Examples:
+			1. Terminate processes by name:
+				pkill apache2
+			2. Kill processes owned by a user:
+				pkill -u username
+
+3. Monitoring Process Performance
+		A) uptime` Command
+			Displays system uptime, load averages, and logged-in users.
+			Example:
+				uptime
+
+		B) `free` Command
+			Displays memory usage.
+			Syntax:
+				free [options]
+			Example:
+				free -h
+
+		C)`iostat` Command
+			Monitors CPU and disk I/O usage.
+			Example:
+				iostat -x 1
+
+4. Background and Foreground Processes
+		
+		A) Run a Process in the Background
+			Append `&` to a command:
+				command &
+
+		B) Bring a Background Process to Foreground
+			1. List background jobs:
+				jobs
+			2. Bring job to the foreground:
+				fg %1
+
+		C) Suspend a Foreground Process
+			Press `Ctrl + Z`.
+
+5. Process Prioritization
+
+		A) `nice` Command
+			Starts a process with a specified priority.
+			Syntax:				
+				nice -n [priority] command			
+			Example:			
+				nice -n 10 python script.py
+
+
+6. Process Trees and Parent-Child Relationships
+			A) `pstree` Command
+			Displays processes in a tree format.
+			Example:
+				pstree
+
+
+7. Advanced Commands
+	A) `strace` Command
+		Traces system calls made by a process.
+			Syntax:
+				strace [options] command
+			Example:
+				strace -p 1234
+	B) `lsof` Command
+		Lists open files by processes.
+			Syntax:
+				lsof [options]
+			Example:
+				1. List files opened by a process:
+					lsof -p 1234
+				2. Find processes using a file:
+					lsof /path/to/file
+   
+	C) `bg` and `fg` Commands
+		- `bg`: Resume a suspended process in the background.
+		- `fg`: Resume a process in the foreground.
+			Example:
+			1. Resume in the background:
+				bg
+			2. Bring it back to the foreground:
+				fg
+				
+
+>>Key Signals for Process Management
+|---------|------------|------------------------------|
+| Signal  | Name       | Description                  |
+|---------|------------|------------------------------|
+| `1`     | SIGHUP     | Reload configuration         |
+| `9`     | SIGKILL    | Force terminate              |
+| `15`    | SIGTERM    | Graceful termination         |
+| `18`    | SIGCONT    | Resume a stopped process     |
+| `19`    | SIGSTOP    | Stop a process               |
+|---------|------------|------------------------------|
+
+Tips for Effective Process Management
+1. Regularly monitor load with `top` or `htop`.
+2. Use `kill` responsibly to avoid terminating critical processes.
+3. Prioritize essential tasks with `nice` and `renice`.
+4. Automate routine tasks using `cron` or `at`.
+
+
+-------------------------------------------------------------------------------------------------------------
+Networking
+-------------------------------------------------------------------------------------------------------------
+1. ping
+   - Check network connectivity.  
+   - Example: ping google.com.
+   - Testing Connectivity	
+		A) ping Command
+		Tests connectivity to a host.
+			Syntax:
+				ping [options] hostname/IP
+			Examples:
+				1) Basic usage:
+					ping google.com
+				2) Limit the number of pings:
+					ping -c 4 google.com
+		
+		B) traceroute Command
+		Shows the route packets take to a destination.
+			Syntax:
+				traceroute [options] hostname/IP
+			Example:
+				traceroute google.com
+
+2. curl/wget
+   - Download files or test APIs.  
+   - Example: curl http://example.com.
+		A) curl Command
+			Transfers data from or to a server.
+			Syntax:	
+				curl [options] URL
+			Examples:
+				1)Download a file:
+					curl -O http://example.com/file.txt
+				2)Send a GET request:
+					curl http://example.com
+
+		B) wget Command
+			Another tool for downloading files from the web.
+			Examples:
+				Download a file:
+					wget http://example.com/file.txt
+				Resume a download:
+			wget -c http://example.com/file.txt
+
+3. netstat
+   - View network connections.  
+   - Example: netstat -tuln.
+   - ss Command	
+		Modern replacement for netstat.
+		Syntax:
+			ss [options]
+		Examples:
+			Show listening sockets:	
+				ss -l
+			Show TCP connections: 
+				ss -t
+			Show processes using ports:	
+				ss -pt
+			
+4. ipconfig
+    Checking Network Configuration
+	ip Command
+		A modern replacement for ifconfig with more features.
+		Syntax:
+			ip [options] OBJECT COMMAND
+		Examples:
+			Show IP addresses:	
+				ip addr	
+			
+			Display all interfaces:
+				ip link show
+				
+			Bring an interface up or down:
+				ip link set eth0 up
+				ip link set eth0 down
+		
+			Add an IP address:
+				ip addr add 192.168.1.10/24 dev eth0
+
+
+5) scp Command
+	Securely copies files between systems.
+	Examples:
+		1)Copy a file to a remote system:
+			scp file.txt user@remote:/path/to/destination	
+		2)Copy a file from a remote system:
+			scp user@remote:/path/to/source file.txt
+
+
+-------------------------------------------------------------------------------------------------------------
+AWK
+-------------------------------------------------------------------------------------------------------------
+AWK is a powerful text-processing tool in Linux and Unix-like operating systems. 
+Named after its creators (Aho, Weinberger, and Kernighan), 
+AWK is used for pattern matching, data extraction, and text manipulation in files or streams.
+
+Key Features of AWK
+1. Processes text line by line.
+2. Uses a scripting language with variables, loops, and conditional statements.
+3. Splits input text into fields based on delimiters (default is whitespace).
+4. Supports regular expressions for pattern matching.
+
+A) Basic Syntax
+	awk 'pattern {action}' file
+		- pattern: Specifies which lines to match (optional).
+		- action: Specifies what to do with matched lines (optional).
+		- file: The input file to process.
+		- If no pattern is given, AWK applies the action to all lines. If no action is given, AWK prints matching lines.
+
+B) Basic Usage
+		Example 1: Print All Lines of a File
+			awk '{print}' file.txt
+			
+		Example 2: Print a Specific Column
+			awk '{print $2}' file.txt
+				- `$1`: First column.			
+				- `$2`: Second column.			
+				- `$0`: Entire line.
+
+C) Field Separator (`-F`)
+		Example 1: Specify a Delimiter
+			awk -F ":" '{print $1, $3}' /etc/passwd
+				- `-F ":"`: Sets the field separator to `:`.				
+				- Prints the first and third columns.
+
+		Example 2: Use a Custom Delimiter
+			awk -F "," '{print $2}' file.csv
+
+D) Patterns in AWK
+		Example 1: Match Lines Containing a String
+					awk '/pattern/' file.txt
+					Prints all lines containing "pattern."
+
+		Example 2: Match Lines with Regular Expressions
+					awk '/^hello/' file.txt
+					Prints lines starting with "hello."
+
+		Example 3: Match Lines Based on Conditions
+					awk '$3 > 50' file.txt
+					Prints lines where the third column is greater than 50.
+
+E) Built-in Variables in AWK
+	
+		|-------------|-------------------------------------------------|	
+		| Variable    | Description                                     |	
+		|-------------|-------------------------------------------------|	
+		| `NR`        | Current record (line) number.                   |	
+		| `NF`        | Number of fields in the current record.         |	
+		| `FS`        | Input field separator (default: whitespace).    |	
+		| `OFS`       | Output field separator (default: space).        |	
+		| `RS`        | Input record separator (default: newline).      |	
+		| `ORS`       | Output record separator (default: newline).     |	
+		|-------------|-------------------------------------------------|
+		
+		Example: Print Line Numbers
+		
+		awk '{print NR, $0}' file.txt	
+		Example: Print Number of Fields
+		
+		awk '{print $0, NF}' file.txt
+
+F) Actions in AWK
+		Example 1: Perform Arithmetic
+			awk '{sum += $2} END {print "Total:", sum}' file.txt
+				- `sum += $2`: Adds the value of the second column to `sum`.
+				- `END`: Executes the block after processing all lines.
+
+		Example 2: Conditional Statements
+			awk '{if ($3 > 50) print $1, $3}' file.txt
+
+
+		Example 3: Use Loops
+			awk '{for (i = 1; i <= NF; i++) print $i}' file.txt
+			Prints each field in a new line.
+
+G) AWK Scripts
+		Save AWK code in a file and execute it.
+		Script File (`script.awk`):
+			{print $1, $3}
+
+		Run the Script:
+			awk -f script.awk file.txt
+
+K) Advanced Features
+		1. User-defined Variables
+			awk -v threshold=50 '$3 > threshold {print $1, $3}' file.txt
+			
+		2. Field Manipulation
+			awk '{ $2 = $2 * 2; print $0 }' file.txt
+			Doubles the value in the second column.
+
+		3. Working with Multiple Files
+			awk 'FNR == 1 {print "Processing:", FILENAME} {print $0}' file1.txt file2.txt
+			- `FNR`: Line number in the current file.
+			- `FILENAME`: Current file name.
+
+
+Tips for Mastery
+1. Practice with real-world data files (logs, CSVs).
+2. Use `awk --help` and `man awk` for quick reference.
+3. Combine AWK with shell loops and scripts for automation.
+
+-------------------------------------------------------------------------------------------------------------
+GREP 
+-------------------------------------------------------------------------------------------------------------
+
+The `grep` command (short for Global Regular Expression Print) is a powerful tool used to search for text patterns in files or input streams. 
+It's highly versatile and commonly used for searching, filtering, and analyzing text.
+A) Basic Syntax
+	grep [options] PATTERN [FILE...]
+		- PATTERN: The text or regular expression to search for.
+		- FILE: The file(s) to search through.
+
+
+B) Basic Usage
+		Example 1: Search for a String in a File	
+			grep "word" file.txt
+			Searches for lines containing "word" in `file.txt`.
+		Example 2: Search Multiple Files
+			grep "word" file1.txt file2.txt
+			Searches for "word" in both files and shows matching lines.
+		Example 3: Search in the Output of a Command
+			ps aux | grep "chrome"
+			Filters the output of `ps aux` for lines containing "chrome."
+
+C) Options for GREP
+	1. Case Sensitivity
+		- `-i`: Ignore case.
+		grep -i "word" file.txt
+
+
+	2. Exact Matches
+		- `-w`: Match whole words.
+		grep -w "word" file.txt
+
+	3. Count Matches
+		- `-c`: Count the number of matching lines.
+		grep -c "word" file.txt
+
+	4. Line Numbers
+		- `-n`: Show line numbers of matching lines.
+		grep -n "word" file.txt
+	
+	5. Invert Match
+		- `-v`: Display lines that do not match the pattern.
+		grep -v "word" file.txt
+
+	6. Recursive Search
+		- `-r`: Search recursively in directories.
+		grep -r "word" /path/to/directory
+	
+	7. Show Filename Only
+		- `-l`: Display only filenames of files with matches.
+		grep -l "word" *.txt
+
+	8. Show Non-matching Files
+		- `-L`: Display filenames of files without matches.
+		grep -L "word" *.txt
+
+	9. Show Entire Line
+		- `-o`: Display only the matched part of the line.
+		grep -o "word" file.txt
+
+
+
+D) Regular Expressions with GREP
+	1. Anchors
+		- `^`: Start of a line.
+		grep "^word" file.txt
+		Matches lines starting with "word."
+		
+		
+		- `$`: End of a line.
+		grep "word$" file.txt
+		Matches lines ending with "word."
+
+	2. Character Classes
+	
+		- `[abc]`: Matches any character in brackets.
+		grep "[aeiou]" file.txt
+		Matches lines containing any vowel.
+		
+		
+		- `[^abc]`: Negates the match.
+		grep "[^aeiou]" file.txt
+		Matches lines without vowels.
+
+	3. Wildcards
+		- `.`: Matches any single character.
+		grep "w.rd" file.txt
+		Matches "word," "ward," etc.
+
+
+		- `*`: Matches zero or more occurrences of the preceding character.
+		grep "wo*d" file.txt 
+		Matches "wd," "wood," "woooooood," etc.
+
+	4. Escaping Special Characters
+		Use `\` to escape special characters.
+		grep "a\*b" file.txt
+		Searches for "a*b" in the file
+  
+
+E)  Combining GREP with Other Commands
+		Example 1: Search and Count Specific Processes
+			ps aux | grep -c "process_name"
+
+
+		Example 2: Filter Files with `find` and `grep`
+			find /path -type f -name "*.txt" | xargs grep "word"
+
+		Example 3: Use with `sed` for Replacement
+			grep "pattern" file.txt | sed 's/pattern/replacement/'
+			
+
+-------------------------------------------------------------------------------------------------------------
+System Information
+-------------------------------------------------------------------------------------------------------------
+1. uname
+   - Display system information.  
+   - Example: uname -a.
+
+2. uptime
+   - Show system uptime and load average.
+
+3. whoami
+   - Show the current logged-in user.
+
+4. history
+   - View command history.
+
+
+-------------------------------------------------------------------------------------------------------------
+Archiving and Compression
+-------------------------------------------------------------------------------------------------------------
+1. tar
+   - Create and extract tar archives.  
+   - Example: tar -cvf archive.tar folder, tar -xvf archive.tar.
+
+2. zip/unzip
+   - Compress and decompress files.  
+   - Example: zip archive.zip file.txt, unzip archive.zip.
+   
+Key Concepts
+			1. Archiving: Bundling multiple files into a single file.
+				- Tools: `tar`, `cpio`
+
+			2. Compression: Reducing file size using algorithms.
+				- Tools: `gzip`, `bzip2`, `xz`, `zip`
+
+			3. Combined: Creating compressed archives.
+				- Tools: `tar` with compression (e.g., `tar.gz`, `tar.bz2`)
+
+Archiving Tools
+1. `tar` (Tape Archive)
+	- Combines multiple files into a single archive.
+	- Often used with compression.
+	Basic Syntax:
+		tar [options] [archive_file] [files...]
+	Common Options:
+				|--------|-----------------------------------------|
+				| Option | Description                             |
+				|--------|-----------------------------------------|
+				| `-c`   | Create an archive.                      |
+				| `-x`   | Extract files from an archive.          |
+				| `-t`   | List the contents of an archive.        |
+				| `-f`   | Specify the archive file name.          |
+				| `-v`   | Verbose output (list files being processed). |
+				| `-z`   | Use gzip for compression.               |
+				| `-j`   | Use bzip2 for compression.              |
+				| `-J`   | Use xz for compression.                 |
+				|--------|-----------------------------------------|
+		
+		Examples:
+			1. Create an Archive:
+				tar -cvf archive.tar file1 file2
+			
+			2. Extract an Archive:
+				tar -xvf archive.tar
+			
+			3. Create a Compressed Archive:
+				- Using Gzip:
+					tar -czvf archive.tar.gz file1 file2
+				- Using Bzip2:
+					tar -cjvf archive.tar.bz2 file1 file2
+				- Using XZ:
+					tar -cJvf archive.tar.xz file1 file2
+
+			4. Extract a Compressed Archive:
+				- Gzip:
+					tar -xzvf archive.tar.gz
+				- Bzip2:
+					tar -xjvf archive.tar.bz2
+				- XZ:
+					tar -xJvf archive.tar.xz
+
+
+
+Compression Tools
+1. `gzip`
+	- Compresses files using the GNU zip algorithm.	
+	- Produces `.gz` files.
+	Examples:
+		1. Compress a File:
+			gzip file.txt
+			Output: `file.txt.gz`
+
+		2. Decompress a File:
+			gzip -d file.txt.gz
+
+2.`bzip2`
+	- Compresses files with a higher compression ratio than gzip.
+	- Produces `.bz2` files.
+	Examples:
+		1. Compress a File:
+			bzip2 file.txt
+			Output: `file.txt.bz2`
+
+		2. Decompress a File:
+			bzip2 -d file.txt.bz2
+
+
+3.`xz`
+	- Provides high compression ratio.
+	- Produces `.xz` files.
+	Examples:
+		1. Compress a File:
+			xz file.txt
+			Output: `file.txt.xz`
+
+		2. Decompress a File: 
+			xz -d file.txt.xz
+   
+
+4. `zip`
+		- Combines archiving and compression.
+		- Produces `.zip` files.
+		Examples:
+			1.Compress Files into a Zip Archive
+				zip archive.zip file1 file2
+
+			2.Extract a Zip Archive:
+				unzip archive.zip
+
+
+Viewing Contents of Archives:
+
+		1. View `tar` Archive
+				tar -tvf archive.tar
+
+		2. View `zip` Archive
+				unzip -l archive.zip
+
+Combining Tools:
+
+	Example 1: Create a Gzipped Tar Archive
+		tar -czvf backup.tar.gz /path/to/directory
+
+	Example 2: Extract Files from a Gzipped Tar Archive
+		tar -xzvf backup.tar.gz
+
+	Example 3: Compress a File with `gzip` and Move to Another Directory
+		gzip file.txt && mv file.txt.gz /backup/
+
+
+
+ Comparison of Compression Tools
+|---------|-------------|-------------------|----------------|
+| Tool    | Speed       | Compression Ratio | File Extension |
+|---------|-------------|-------------------|----------------|
+| `gzip`  | Fast        | Moderate          | `.gz`          |
+| `bzip2` | Moderate    | High              | `.bz2`         |
+| `xz`    | Slow        | Very High         | `.xz`          |
+| `zip`   | Fast        | Moderate          | `.zip`         |
+|---------|-------------|-------------------|----------------|
+
+ Practical Use Cases
+
+1. Backup and Compress Directories:
+   tar -czvf backup.tar.gz /home/user/documents
+
+2. Archive Log Files:
+   tar -czvf logs.tar.gz /var/log/*.log
+
+3. Extract and Analyze Archived Data:
+   tar -xvf data.tar && grep "error" data/*.txt
+
+4. Compress and Secure Files:
+   zip -e secure.zip file1 file2
+   (Prompts for a password.)
+
+-------------------------------------------------------------------------------------------------------------
+Date and Time 
+-------------------------------------------------------------------------------------------------------------
+
+1. The `date` Command
+	The `date` command is used to display the current date and time in various formats and allows you to manipulate and set the system's date and time.
+
+Basic Syntax
+		date [OPTION]... [+FORMAT]
+			- FORMAT: Specifies the output format for the date and time.
+
+Common `date` Command Examples
+	1. Display Current Date and Time:
+		date
+   
+	2. Display Date in a Custom Format:
+		date "+%Y-%m-%d %H:%M:%S"
+   
+	3. Display Only the Date:
+		date "+%Y-%m-%d"
+
+	4. Display Only the Time:
+		date "+%H:%M:%S"
+ 
+	5. Display the Day of the Week:
+		date "+%A"
+
+	6. Display the Month Name:
+		date "+%B" 
+
+	7. Display the Unix Timestamp (Epoch Time)
+		date "+%s"
+
+ 2. Formatting Options for `date`
+					- %Y: Full year (e.g., 2024)
+					- %m: Month (01 to 12)
+					- %d: Day of the month (01 to 31)
+					- %H: Hour in 24-hour format (00 to 23)
+					- %M: Minute (00 to 59)
+					- %S: Second (00 to 59)
+					- %A: Full weekday name (e.g., Sunday)
+					- %a: Abbreviated weekday name (e.g., Sun)
+					- %B: Full month name (e.g., December)
+					- %b: Abbreviated month name (e.g., Dec)
+					- %I: Hour in 12-hour format (01 to 12)
+					- %p: AM or PM
+					- %Z: Time zone abbreviation (e.g., IST)
+					- %s: Seconds since the Unix epoch (1970-01-01 00:00:00 UTC)
+
+			Example : Display Date and Time in a Specific Format
+						date "+%A, %B %d, %Y %I:%M:%S %p"
+			Output:
+					Sunday, December 30, 2024 02:30:45 PM
+
+3 . Working with Dates in the Past and Future
+			You can use the `date` command to perform date arithmetic, such as calculating the date in the past or future.
+		A) Display Date 10 Days Ago
+			date --date="10 days ago"
+		
+		B)Display Date 1 Month Ahead
+			date --date="1 month"
+
+		C)Display Date 3 Hours in the Future
+			date --date="3 hours"
+			
+		D)Display Date 2 Years in the Future
+			date --date="2 years
+			
+4. Using `date` with Shell Scripts
+	The `date` command is commonly used in shell scripts for logging, file naming, and scheduling tasks.
+	Example: Create a Backup with Date in Filename
+	#!/bin/bash
+	backup_dir="/path/to/backup"
+	filename="backup-$(date '+%Y%m%d%H%M%S').tar.gz"
+	tar -czvf $backup_dir/$filename /path/to/data
+	
+	This script will create a backup file with a timestamp in its name, such as `backup-20241230143045.tar.gz`.
+
+5 . Working with Dates in Scripts
+		You can extract components like the year, month, and day from a date and use them in scripts.
+		Example: Extract Day of the Week
+			day_of_week=$(date "+%A")
+			echo "Today is: $day_of_week"
+					
+ Summary of Key Date Formats
+- %Y: Full year (e.g., 2024)
+- %m: Month (01-12)
+- %d: Day of the month (01-31)
+- %H: Hour in 24-hour format (00-23)
+- %M: Minute (00-59)
+- %S: Second (00-59)
+- %A: Full weekday name (e.g., Sunday)
+- %B: Full month name (e.g., December)
+- %s: Unix timestamp (seconds since Jan 1, 1970)
+
+
+-------------------------------------------------------------------------------------------------------------
+Job/Task Scheduling And Automation 
+-------------------------------------------------------------------------------------------------------------
+Crontab : 
+
+Crontab (short for cron table) is a configuration file in Linux that is used to schedule commands and scripts to run automatically at specified times and intervals. 
+The cron service in Linux runs in the background and handles the execution of scheduled tasks defined in crontab files. 
+This is useful for automating repetitive tasks, such as backups, system updates, and monitoring.
+
+
+1. Basic Concepts of Crontab
+Cron Jobs: Scheduled tasks defined in a crontab file.
+Crontab File: A file containing cron job definitions.
+Cron Daemon: The background service that runs cron jobs at specified intervals.
+
+2. Crontab Syntax
+A crontab file consists of lines of the following format:
+
+* * * * * command_to_execute
+- - - - -
+| | | | |  
+| | | | +---- Day of the Week (0 - 6) (Sunday=0)
+| | | +------ Month (1 - 12)
+| | +-------- Day of the Month (1 - 31)
+| +---------- Hour (0 - 23)
++------------ Minute (0 - 59)
+
+	-	Minute: The minute of the hour when the job should run (0-59).
+	-	Hour: The hour of the day when the job should run (0-23).
+	-	Day of Month: The day of the month when the job should run (1-31).
+	-	Month: The month when the job should run (1-12).
+	-	Day of Week: The day of the week when the job should run (0-6, where 0 is Sunday).
+	
+	Example:
+		30 2 1 * * /home/user/backup.sh
+		This means the cron job will run at 2:30 AM on the 1st day of every month.
+
+3. Special Characters in Crontab
+			* (Asterisk): Represents any value. For example, * in the minute field means every minute.
+			, (Comma): Used to separate multiple values. For example, 1,5,10 in the day field means the job will run on the 1st, 5th, and 10th of the month.
+			- (Dash): Represents a range of values. For example, 1-5 in the weekday field means Monday to Friday.
+			/ (Slash): Used to define intervals. For example, */5 in the minute field means every 5 minutes.
+			? (Question Mark): Used in the day-of-week and day-of-month fields (only in some systems like Quartz Scheduler). Represents "no specific value."
+
+
+4. Managing Cron Jobs
+View the Current Crontab
+	A) To view the crontab for the current user:
+		crontab -l
+
+	B)To view the crontab of another user (requires root privileges):
+		sudo crontab -l -u username
+	
+	C)Edit the Crontab
+		To edit the crontab for the current user:
+		crontab -e
+		This opens the default text editor to edit the crontab file.
+		
+		To edit the crontab for another user (requires root privileges):
+		sudo crontab -e -u username
+
+	D)Remove the Current Crontab
+		To remove the crontab for the current user:
+		crontab -r
+		
+		To remove the crontab for another user (requires root privileges):	
+		sudo crontab -r -u username
+		
+5. Common Use Cases of Crontab
+	1. Running a Backup Script Every Day at Midnight
+		0 0 * * * /home/user/backup.sh
+		This runs the backup.sh script every day at 12:00 AM (midnight).
+	2. Running a Script Every 10 Minutes
+		*/10 * * * * /home/user/monitor.sh
+		This runs the monitor.sh script every 10 minutes.
+	3. Running a Script Every Hour at the 30th Minute
+		30 * * * * /home/user/cleanup.sh
+		This runs the cleanup.sh script every hour, on the 30th minute.
+
+6. Logging Output from Cron Jobs
+		By default, cron jobs do not display any output to the terminal. However, you can direct the output of cron jobs to a log file.
+		
+		A) Redirecting Standard Output and Errors to a File
+				* * * * * /home/user/script.sh > /home/user/script.log 2>&1
+				This runs script.sh every minute and logs both standard output (stdout) and errors (stderr) to the script.log file.
+	
+	
+		B)Send Cron Job Output to Email. 
+			If the system is configured to send emails, you can set the output to be emailed to the user:
+				* * * * * /home/user/script.sh
+				This will send the output of the script.sh to the user's mailbox.
+				
+7. Crontab Examples for Regular Tasks
+			1. Running System Updates Daily at 2 AM
+					0 2 * * * sudo apt-get update && sudo apt-get upgrade -y
+			2. Running a Script Every Sunday at Midnight
+					0 0 * * 0 /home/user/weekend_cleanup.sh
+			3. Running a Disk Space Check Every 5th Day of the Month
+					0 0 5 * * df -h > /home/user/disk_usage.txt
+			4. Running a Script Every 15 Minutes
+					*/15 * * * * /home/user/check_system.sh
+
+8. Advanced Crontab Options
+		Set an Environment Variable for a Cron Job
+		If your cron job needs environment variables, you can define them within the crontab.
+
+		Example:
+			PATH=/usr/bin:/bin:/usr/sbin:/sbin
+			0 0 * * * /home/user/script.sh
+			Using Multiple Commands in a Single Cron Job
+			You can use && or ; to execute multiple commands in a single cron job.
+
+			Example:
+			0 2 * * * /home/user/backup.sh && /home/user/cleanup.sh
+			This will run the backup script and, if successful, run the cleanup script.
+
+9. Troubleshooting Cron Jobs
+	Cron Job Not Running:
+	Check for syntax errors in the crontab.
+	Ensure the script has executable permissions (chmod +x /path/to/script.sh).
+	Ensure the cron daemon is running (sudo service cron status).
+	Log File Not Being Created:
+
+	Verify the cron job has write permissions to the specified log file.
+	Use >/dev/null 2>&1 to suppress output or log errors only.
+
+			
+Summary of Key Commands
+crontab -l: List current cron jobs.
+crontab -e: Edit the current user's crontab.
+crontab -r: Remove the current user's crontab.
+sudo crontab -l -u username: View a specific user's cron jobs.
+sudo crontab -e -u username: Edit a specific user's cron jobs.
+
+-------------------------------------------------------------------------------------------------------------
+Package Management
+-------------------------------------------------------------------------------------------------------------
+1. apt (Debian-based systems) 
+   - Install, update, and manage packages.  
+   - Example: sudo apt update, sudo apt install package.
+
+2. yum (RedHat-based systems) 
+   - Manage packages.  
+   - Example: sudo yum install package.
+
+-------------------------------------------------------------------------------------------------------------
+Other Utilities
+-------------------------------------------------------------------------------------------------------------
+1. alias
+   - Create custom command shortcuts.  
+   - Example: alias ll='ls -l'.
+
+2. crontab
+   - Schedule tasks.  
+   - Example: crontab -e.
+
+3. echo
+   - Display text or write to files.  
+   - Example: echo "Hello" > file.txt.
+
+4. ssh
+   - Connect to a remote server.  
+   - Example: ssh user@hostname.
+
+
